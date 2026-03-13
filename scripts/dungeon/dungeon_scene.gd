@@ -18,6 +18,7 @@ var player_pos: Vector2i
 var in_combat := false
 var enemies: Array[Dictionary] = []
 var items: Array[Dictionary] = []
+var resources: Array[Dictionary] = []
 
 var combat_system := CombatSystem.new()
 var turn_queue: Array[Dictionary] = []
@@ -45,11 +46,12 @@ func _load_or_generate_dungeon() -> void:
 	if not GameState.pending_dungeon_state.is_empty():
 		dungeon = GameState.pending_dungeon_state.duplicate(true)
 	else:
-		var config := DataManager.get_dungeon(GameState.selected_dungeon_id)
+		var config: Dictionary = DataManager.get_dungeon(GameState.selected_dungeon_id)
 		dungeon = DungeonGenerator.new().generate(config)
 	player_pos = dungeon.get("player_spawn", Vector2i.ONE)
 	enemies = dungeon.get("enemies", [])
 	items = dungeon.get("items", [])
+	resources = dungeon.get("resources", [])
 
 func _render_dungeon() -> void:
 	grid_view.queue_redraw()
@@ -59,7 +61,7 @@ func _update_info(text: String) -> void:
 	info_label.text = text
 
 func _update_turn_label() -> void:
-	turn_label.text = "Tour donjon: %d" % dungeon.get("turn_count", 0)
+	turn_label.text = "Tour donjon: %d | Ennemis: %d" % [dungeon.get("turn_count", 0), enemies.size()]
 
 func _try_move(direction: Vector2i) -> void:
 	var next := player_pos + direction
@@ -67,20 +69,32 @@ func _try_move(direction: Vector2i) -> void:
 		return
 	player_pos = next
 	_collect_item_if_any()
+	_collect_resource_if_any()
 	_trigger_enemy_if_adjacent()
 	_check_exit()
 	dungeon["turn_count"] = dungeon.get("turn_count", 0) + 1
 	_update_turn_label()
 	_enemy_overworld_turn()
+	_try_spawn_enemy()
 	GameState.pending_dungeon_state = _capture_dungeon_state()
 	_render_dungeon()
 
 func _collect_item_if_any() -> void:
 	for i in range(items.size() - 1, -1, -1):
 		if items[i].get("position", Vector2i.ZERO) == player_pos:
-			GameState.add_item(items[i].get("id", "potion"), 1)
-			_update_info("Objet ramassé: %s" % DataManager.get_item(items[i].get("id", "")).get("name", "Objet"))
+			var item_id: String = items[i].get("id", "potion")
+			GameState.add_item(item_id, 1)
+			_update_info("Objet ramassé: %s" % DataManager.get_item(item_id).get("name", "Objet"))
 			items.remove_at(i)
+
+func _collect_resource_if_any() -> void:
+	for i in range(resources.size() - 1, -1, -1):
+		if resources[i].get("position", Vector2i.ZERO) == player_pos:
+			var resource_id: String = resources[i].get("id", "wood")
+			var amount: int = int(resources[i].get("amount", 1))
+			GameState.add_resource(resource_id, amount)
+			_update_info("Ressource collectée: %s x%d" % [resource_id.capitalize(), amount])
+			resources.remove_at(i)
 
 func _trigger_enemy_if_adjacent() -> void:
 	for enemy in enemies:
@@ -104,6 +118,45 @@ func _enemy_overworld_turn() -> void:
 		var target := enemy["position"] + step
 		if dungeon.get("walkable", []).has(target) and target != player_pos:
 			enemy["position"] = target
+
+func _try_spawn_enemy() -> void:
+	var cooldown: int = int(dungeon.get("spawn_cooldown", 0))
+	if cooldown > 0:
+		dungeon["spawn_cooldown"] = cooldown - 1
+		return
+	var max_enemies: int = 4 + int(dungeon.get("turn_count", 0) / 10)
+	max_enemies -= GameState.get_camp_bonus("spawn_safety")
+	max_enemies = maxi(2, max_enemies)
+	if enemies.size() >= max_enemies:
+		return
+	var spawn_points: Array = dungeon.get("spawn_points", [])
+	if spawn_points.is_empty():
+		return
+	var free_spawns: Array[Vector2i] = []
+	for point in spawn_points:
+		if point == player_pos:
+			continue
+		var blocked := false
+		for enemy in enemies:
+			if enemy.get("position", Vector2i.ZERO) == point:
+				blocked = true
+				break
+		if not blocked:
+			free_spawns.append(point)
+	if free_spawns.is_empty():
+		return
+	var config: Dictionary = DataManager.get_dungeon(GameState.selected_dungeon_id)
+	var enemy_pool: Array = config.get("enemy_pool", ["mushboom"])
+	var enemy_id: String = enemy_pool.pick_random()
+	var template: Dictionary = DataManager.get_enemy_template(enemy_id)
+	if template.is_empty():
+		return
+	template["id"] = enemy_id
+	template["hp"] = template.get("max_hp", 8)
+	template["position"] = free_spawns.pick_random()
+	enemies.append(template)
+	dungeon["spawn_cooldown"] = 3
+	_update_info("Un %s apparaît dans l'ombre..." % template.get("name", "ennemi"))
 
 func _start_combat() -> void:
 	in_combat = true
@@ -219,6 +272,7 @@ func _check_exit(force_win := false) -> void:
 func _capture_dungeon_state() -> Dictionary:
 	dungeon["enemies"] = enemies
 	dungeon["items"] = items
+	dungeon["resources"] = resources
 	dungeon["player_spawn"] = player_pos
 	return dungeon.duplicate(true)
 

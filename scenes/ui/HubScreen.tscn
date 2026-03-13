@@ -29,7 +29,8 @@ theme_override_constants/separation = 12
 
 [node name="Title" type="Label" parent="Margin/VBox"]
 layout_mode = 2
-text = "Hub"
+theme_override_font_sizes/font_size = 28
+text = "Hub du Camp"
 
 [node name="TeamLabel" type="Label" parent="Margin/VBox"]
 layout_mode = 2
@@ -39,13 +40,23 @@ text = "Équipe"
 layout_mode = 2
 text = "Inventaire"
 
+[node name="ResourcesLabel" type="Label" parent="Margin/VBox"]
+layout_mode = 2
+text = "Ressources"
+
+[node name="CampLabel" type="Label" parent="Margin/VBox"]
+layout_mode = 2
+text = "Camp"
+
 [node name="StatusLabel" type="Label" parent="Margin/VBox"]
 layout_mode = 2
 text = "Prêt."
 
-[node name="Buttons" type="HBoxContainer" parent="Margin/VBox"]
+[node name="Buttons" type="GridContainer" parent="Margin/VBox"]
 layout_mode = 2
-theme_override_constants/separation = 8
+columns = 2
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
 
 [node name="EnterDungeon" type="Button" parent="Margin/VBox/Buttons"]
 layout_mode = 2
@@ -54,6 +65,18 @@ text = "Entrer dans le donjon"
 [node name="Rest" type="Button" parent="Margin/VBox/Buttons"]
 layout_mode = 2
 text = "Se reposer"
+
+[node name="UpgradeFire" type="Button" parent="Margin/VBox/Buttons"]
+layout_mode = 2
+text = "Améliorer le feu"
+
+[node name="UpgradeTent" type="Button" parent="Margin/VBox/Buttons"]
+layout_mode = 2
+text = "Améliorer la tente"
+
+[node name="UpgradeScout" type="Button" parent="Margin/VBox/Buttons"]
+layout_mode = 2
+text = "Former les éclaireurs"
 
 [node name="Save" type="Button" parent="Margin/VBox/Buttons"]
 layout_mode = 2
@@ -65,5 +88,8 @@ text = "Retour titre"
 
 [connection signal="pressed" from="Margin/VBox/Buttons/EnterDungeon" to="." method="_on_enter_dungeon_pressed"]
 [connection signal="pressed" from="Margin/VBox/Buttons/Rest" to="." method="_on_rest_pressed"]
+[connection signal="pressed" from="Margin/VBox/Buttons/UpgradeFire" to="." method="_on_upgrade_fire_pressed"]
+[connection signal="pressed" from="Margin/VBox/Buttons/UpgradeTent" to="." method="_on_upgrade_tent_pressed"]
+[connection signal="pressed" from="Margin/VBox/Buttons/UpgradeScout" to="." method="_on_upgrade_scout_pressed"]
 [connection signal="pressed" from="Margin/VBox/Buttons/Save" to="." method="_on_save_pressed"]
 [connection signal="pressed" from="Margin/VBox/Buttons/TitleButton" to="." method="_on_title_pressed"]
