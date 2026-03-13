@@ -22,6 +22,7 @@ func _draw() -> void:
 
 	var walkable: Array = dungeon.get("walkable", [])
 	for cell in walkable:
+		cell = Vector2i(cell)
 		var alt := (cell.x + cell.y) % 2 == 0
 		var color := FLOOR_ALT_COLOR if alt else FLOOR_COLOR
 		draw_rect(Rect2(cell * tile_size, Vector2(tile_size, tile_size)), color, true)
@@ -33,7 +34,7 @@ func _draw() -> void:
 
 	var exit_pos: Vector2i = dungeon.get("exit_position", Vector2i.ZERO)
 	draw_rect(Rect2(exit_pos * tile_size, Vector2(tile_size, tile_size)), EXIT_COLOR, true)
-	draw_string(ThemeDB.fallback_font, exit_pos * tile_size + Vector2(10, 26), "↗", HORIZONTAL_ALIGNMENT_LEFT, -1, 20, Color("#0b2a11"))
+	draw_string(ThemeDB.fallback_font, Vector2(exit_pos * tile_size) + Vector2(10, 26), "↗", HORIZONTAL_ALIGNMENT_LEFT, -1, 20, Color("#0b2a11"))
 
 	for resource in dungeon_scene.resources:
 		var center: Vector2 = resource.get("position", Vector2i.ZERO) * tile_size + Vector2(tile_size / 2.0, tile_size / 2.0)
