@@ -1,0 +1,34 @@
+{
+  "skills": {
+    "strike": {
+      "name": "Frappe",
+      "type": "damage",
+      "power": 2,
+      "attack_scaling": 1.0
+    },
+    "leaf_slash": {
+      "name": "Tranche-Feuille",
+      "type": "damage",
+      "power": 4,
+      "attack_scaling": 1.0
+    },
+    "ember_burst": {
+      "name": "Braise Vive",
+      "type": "damage",
+      "power": 5,
+      "attack_scaling": 1.1
+    },
+    "aqua_wave": {
+      "name": "Vague Aqua",
+      "type": "damage",
+      "power": 4,
+      "attack_scaling": 1.0
+    },
+    "small_heal": {
+      "name": "Soin Léger",
+      "type": "heal",
+      "power": 5,
+      "attack_scaling": 0.0
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "enemies": {
+    "mushboom": {
+      "name": "Mushboom",
+      "max_hp": 16,
+      "attack": 5,
+      "defense": 2,
+      "speed": 4,
+      "skills": ["strike"]
+    },
+    "sparkat": {
+      "name": "Sparkat",
+      "max_hp": 14,
+      "attack": 6,
+      "defense": 2,
+      "speed": 6,
+      "skills": ["strike"]
+    }
+  }
+}
