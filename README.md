@@ -8,10 +8,10 @@ Prototype Godot 4 en GDScript pour un dungeon crawler 2D au tour par tour.
 
 ## Contenu
 - Écran titre (nouvelle partie / chargement).
-- Hub (état équipe, inventaire, repos, sauvegarde).
-- Donjon procédural sur grille.
-- Déplacement case par case (flèches).
-- Combat tour par tour (équipe de 3 + ennemis IA simple).
+- Hub de camp (état équipe, inventaire, ressources, améliorations de camp, repos, sauvegarde).
+- Donjon procédural sur grille (collecte de ressources + points de spawn).
+- Déplacement case par case (flèches) avec collecte de loot et ressources.
+- Combat tour par tour (équipe de 3 + ennemis IA simple) + renforts ennemis en exploration.
 - Compétences, objets, victoire/défaite.
 - Sauvegarde JSON simple (`user://savegame.json`).
 
