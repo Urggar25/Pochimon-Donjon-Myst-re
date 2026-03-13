@@ -100,7 +100,8 @@ func _trigger_enemy_if_adjacent() -> void:
 	for enemy in enemies:
 		if enemy.get("hp", 0) <= 0:
 			continue
-		var dist := abs(enemy["position"].x - player_pos.x) + abs(enemy["position"].y - player_pos.y)
+		var enemy_pos: Vector2i = enemy.get("position", Vector2i.ZERO)
+		var dist: int = abs(enemy_pos.x - player_pos.x) + abs(enemy_pos.y - player_pos.y)
 		if dist <= 1:
 			_start_combat()
 			return
@@ -109,13 +110,14 @@ func _enemy_overworld_turn() -> void:
 	for enemy in enemies:
 		if enemy.get("hp", 0) <= 0:
 			continue
-		var delta := player_pos - enemy["position"]
+		var enemy_pos: Vector2i = enemy.get("position", Vector2i.ZERO)
+		var delta: Vector2i = player_pos - enemy_pos
 		var step := Vector2i.ZERO
 		if abs(delta.x) > abs(delta.y):
 			step.x = sign(delta.x)
 		else:
 			step.y = sign(delta.y)
-		var target := enemy["position"] + step
+		var target: Vector2i = enemy_pos + step
 		if dungeon.get("walkable", []).has(target) and target != player_pos:
 			enemy["position"] = target
 
