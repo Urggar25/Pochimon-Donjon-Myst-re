@@ -1,0 +1,14 @@
+{
+  "items": {
+    "potion": {
+      "name": "Potion",
+      "effect": "heal",
+      "power": 8
+    },
+    "seed_power": {
+      "name": "Graine de Puissance",
+      "effect": "buff_attack",
+      "power": 2
+    }
+  }
+}

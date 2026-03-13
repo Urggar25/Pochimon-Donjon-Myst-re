@@ -1,0 +1,28 @@
+{
+  "creatures": {
+    "sprigoo": {
+      "name": "Sprigoo",
+      "max_hp": 24,
+      "attack": 6,
+      "defense": 3,
+      "speed": 6,
+      "skills": ["strike", "leaf_slash"]
+    },
+    "emberix": {
+      "name": "Emberix",
+      "max_hp": 20,
+      "attack": 7,
+      "defense": 2,
+      "speed": 7,
+      "skills": ["strike", "ember_burst"]
+    },
+    "bublo": {
+      "name": "Bublo",
+      "max_hp": 26,
+      "attack": 5,
+      "defense": 4,
+      "speed": 5,
+      "skills": ["strike", "aqua_wave", "small_heal"]
+    }
+  }
+}

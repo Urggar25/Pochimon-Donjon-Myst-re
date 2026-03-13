@@ -1,0 +1,90 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/dungeon/dungeon_scene.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/dungeon/grid_view.gd" id="2"]
+
+[node name="DungeonScene" type="Node2D"]
+script = ExtResource("1")
+
+[node name="GridView" type="Node2D" parent="."]
+position = Vector2(40, 40)
+script = ExtResource("2")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="UI" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="CanvasLayer/UI"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 0.0
+offset_left = -420.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 300.0
+
+[node name="VBox" type="VBoxContainer" parent="CanvasLayer/UI/Panel"]
+layout_mode = 2
+
+[node name="TurnLabel" type="Label" parent="CanvasLayer/UI/Panel/VBox"]
+layout_mode = 2
+text = "Tour donjon"
+
+[node name="InfoLabel" type="Label" parent="CanvasLayer/UI/Panel/VBox"]
+layout_mode = 2
+text = "Info"
+autowrap_mode = 2
+
+[node name="ActionMenu" type="VBoxContainer" parent="CanvasLayer/UI/Panel/VBox"]
+layout_mode = 2
+visible = false
+
+[node name="SkillRow" type="HBoxContainer" parent="CanvasLayer/UI/Panel/VBox/ActionMenu"]
+layout_mode = 2
+
+[node name="SkillLabel" type="Label" parent="CanvasLayer/UI/Panel/VBox/ActionMenu/SkillRow"]
+layout_mode = 2
+text = "Compétence"
+
+[node name="SkillPicker" type="OptionButton" parent="CanvasLayer/UI/Panel/VBox/ActionMenu/SkillRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TargetRow" type="HBoxContainer" parent="CanvasLayer/UI/Panel/VBox/ActionMenu"]
+layout_mode = 2
+
+[node name="TargetLabel" type="Label" parent="CanvasLayer/UI/Panel/VBox/ActionMenu/TargetRow"]
+layout_mode = 2
+text = "Cible"
+
+[node name="TargetPicker" type="OptionButton" parent="CanvasLayer/UI/Panel/VBox/ActionMenu/TargetRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ButtonsRow" type="HBoxContainer" parent="CanvasLayer/UI/Panel/VBox/ActionMenu"]
+layout_mode = 2
+
+[node name="AttackButton" type="Button" parent="CanvasLayer/UI/Panel/VBox/ActionMenu/ButtonsRow"]
+layout_mode = 2
+text = "Exécuter"
+
+[node name="UseItemButton" type="Button" parent="CanvasLayer/UI/Panel/VBox/ActionMenu/ButtonsRow"]
+layout_mode = 2
+text = "Potion"
+
+[node name="FleeButton" type="Button" parent="CanvasLayer/UI/Panel/VBox/ActionMenu/ButtonsRow"]
+layout_mode = 2
+text = "Fuir"
+
+[connection signal="pressed" from="CanvasLayer/UI/Panel/VBox/ActionMenu/ButtonsRow/AttackButton" to="." method="_on_attack_pressed"]
+[connection signal="pressed" from="CanvasLayer/UI/Panel/VBox/ActionMenu/ButtonsRow/UseItemButton" to="." method="_on_use_item_pressed"]
+[connection signal="pressed" from="CanvasLayer/UI/Panel/VBox/ActionMenu/ButtonsRow/FleeButton" to="." method="_on_flee_pressed"]
